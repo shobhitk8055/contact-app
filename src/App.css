@@ -1,0 +1,75 @@
+.calculator-box {
+  width: 320px;
+}
+
+.display-area {
+  background-color: #4C4C4C;
+  color: white;
+  padding-top: 12px;
+  padding-left: 10px;
+  padding-bottom: 0px;
+  font-size: 55px;
+  position: relative;
+}
+
+.button {
+  width: 80px;
+  display: flex;
+  height: 80px;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  background-color: #D6D6D6;
+  border: 3px solid grey;
+  border-bottom: 0px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.button.button-2x {
+  width: 161px;
+}
+
+.drop-right {
+  border-right: 0px;
+}
+.add-bottom {
+  border-bottom: 3px solid grey;
+}
+
+.bg-orange {
+  background-color: #F79231;
+}
+
+.input-field {
+  background: none;
+  outline: none;
+  border: none;
+  color: white;
+}
+
+.button:hover {
+  background-color: #c3b7b7;
+}
+body{
+  background-color: #211111 !important;
+}
+
+.input-field{
+  color: transparent;
+/* Place your text color in the shadow */
+  text-shadow: 0 0 0 white;
+  transition: all .25s cubic-bezier(.645,.045,.355,1);
+}
+
+.input-field:focus{
+  outline: none;
+}
+
+p.operation-test {
+  position: absolute;
+  color: white;
+  top: 10px;
+  font-size: 12px;
+}
+
