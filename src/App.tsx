@@ -13,6 +13,7 @@ import IUser from "./types/User";
 function App() {
   const { data, loading, setLoading } = useUserApi();
   const [users, setUsers] = useState<IUser[]>([]);
+  const [user, setUser] = useState<IUser>();
 
   useEffect(() => {
     if (data) {
@@ -27,6 +28,10 @@ function App() {
       userList.unshift(user);
       setUsers(userList);
     }, 300);
+  };
+
+  const handleEdit = (user: IUser) => {
+    setUser(user);
   };
 
   return (
@@ -51,7 +56,7 @@ function App() {
               {!loading ? (
                 <>
                   {users.map((i, index) => (
-                    <User key={index} user={i} />
+                    <User key={index} user={i} handleEdit={handleEdit} />
                   ))}
                 </>
               ) : (

@@ -10,10 +10,11 @@ import BackdropLoader from "./loaders/BackdropLoader";
 
 interface Props {
   handleSuccess: (user: User) => void;
+  user: User;
 }
 
 function CreateUser(props: Props) {
-  const { handleSuccess } = props;
+  const { handleSuccess, user } = props;
   const [avatar, setAvatar] = useState<string>("user1");
   const [loading, setLoading] = useState<boolean>(false);
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -164,7 +165,7 @@ function CreateUser(props: Props) {
           </div>
         </div>
       </div>
-      <BackdropLoader />
+      <BackdropLoader show={loading} />
     </>
   );
 }
