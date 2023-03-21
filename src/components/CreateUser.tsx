@@ -165,7 +165,7 @@ function CreateUser(props: Props) {
           </div>
         </div>
       </div>
-      <BackdropLoader show={loading} />
+      <BackdropLoader open={loading} />
     </>
   );
 }
