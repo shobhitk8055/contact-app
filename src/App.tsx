@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import User from "./components/User";
 import CreateUser from "./components/CreateUser";
 import "./App.css";
@@ -8,11 +8,27 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import useUserApi from "./hooks/useUserApi";
 import UserListLoader from "./components/loaders/UserListLoader";
+import IUser from "./types/User";
 
 function App() {
-  const { data, loading } = useUserApi();
-  console.log(data, loading);
-  
+  const { data, loading, setLoading } = useUserApi();
+  const [users, setUsers] = useState<IUser[]>([]);
+
+  useEffect(() => {
+    if (data) {
+      setUsers(data);
+    }
+  }, [data]);
+
+  const handleSuccess = (user: IUser) => {
+    setLoading(true);
+    setTimeout(() => {
+      const userList = [...users];
+      userList.unshift(user);
+      setUsers(userList);
+    }, 300);
+  };
+
   return (
     <div className="container">
       <div className="row">
@@ -34,7 +50,7 @@ function App() {
             <div className="card-body">
               {!loading ? (
                 <>
-                  {data.map((i, index) => (
+                  {users.map((i, index) => (
                     <User key={index} user={i} />
                   ))}
                 </>
@@ -45,7 +61,7 @@ function App() {
           </div>
         </div>
       </div>
-      <CreateUser />
+      <CreateUser onSuccess={handleSuccess} />
       <ToastContainer />
     </div>
   );

@@ -13,7 +13,7 @@ function useUserApi() {
     });
   }, []);
 
-  return { data, loading };
+  return { data, loading, setLoading };
 }
 
 export default useUserApi;
