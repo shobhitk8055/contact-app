@@ -7,4 +7,8 @@ export const getUsers = (): Promise<User[]> => {
 
 export const createUser = (payload: User) => {
   return axios.post("users", payload);
-}
+};
+
+export const updateUser = (id: string, payload: User) => {
+  return axios.patch(`users/${id}`, payload);
+};

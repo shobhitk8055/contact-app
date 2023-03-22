@@ -8,7 +8,7 @@ function useInput() {
     setError(false);
     setValue(e.target.value);
   };
-  return { value, handleValue, error, setError };
+  return { value, handleValue, error, setError, setValue };
 }
 
 export default useInput;

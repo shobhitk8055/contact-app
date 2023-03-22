@@ -9,15 +9,20 @@ import { ToastContainer } from "react-toastify";
 import useUserApi from "./hooks/useUserApi";
 import UserListLoader from "./components/loaders/UserListLoader";
 import IUser from "./types/User";
+const rndInt = () => Math.floor(Math.random() * 8 + 1);
 
 function App() {
   const { data, loading, setLoading } = useUserApi();
   const [users, setUsers] = useState<IUser[]>([]);
-  const [user, setUser] = useState<IUser>();
+  const [user, setUser] = useState<IUser | undefined>();
 
   useEffect(() => {
     if (data) {
-      setUsers(data);
+      const userList = data.map((i) => {
+        i.avatar = `user${rndInt()}`;
+        return i;
+      });
+      setUsers(userList);
     }
   }, [data]);
 
@@ -27,6 +32,22 @@ function App() {
       const userList = [...users];
       userList.unshift(user);
       setUsers(userList);
+      setLoading(false);
+    }, 300);
+  };
+
+  const handleEditSuccess = (id: string, payload: IUser) => {
+    setLoading(true);
+    setTimeout(() => {
+      const userList = [...users];
+      const user = userList.find(i => i.id === id);
+      if(user){
+        user.name = payload.name;
+        user.email = payload.email;
+        user.avatar = payload.avatar;
+      }
+      setUsers(userList);
+      setLoading(false);
     }, 300);
   };
 
@@ -47,6 +68,7 @@ function App() {
                   data-bs-target="#createUser"
                   className="btn btn-outline-primary"
                   type="button"
+                  onClick={() => setUser(undefined)}
                 >
                   Add User
                 </button>
@@ -66,7 +88,7 @@ function App() {
           </div>
         </div>
       </div>
-      <CreateUser onSuccess={handleSuccess} />
+      <CreateUser onEditSuccess={handleEditSuccess} user={user} onSuccess={handleSuccess} />
       <ToastContainer />
     </div>
   );

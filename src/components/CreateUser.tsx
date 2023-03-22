@@ -1,22 +1,24 @@
 import clsx from "clsx";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { avatars } from "../constants/avatars";
 import useInput from "../hooks/useInput";
 import { ToastContainer, toast } from "react-toastify";
 import User from "../types/User";
-import { createUser } from "../api/user";
+import { createUser, updateUser } from "../api/user";
 import { v4 as uuid } from "uuid";
 import BackdropLoader from "./loaders/BackdropLoader";
 
 interface Props {
-  handleSuccess: (user: User) => void;
-  user: User;
+  onSuccess: (user: User) => void;
+  onEditSuccess: (id: string, user: User) => void;
+  user?: User;
 }
 
 function CreateUser(props: Props) {
-  const { handleSuccess, user } = props;
+  const { onSuccess, onEditSuccess, user } = props;
   const [avatar, setAvatar] = useState<string>("user1");
   const [loading, setLoading] = useState<boolean>(false);
+  const [flag, setFlag] = useState<string>("create");
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
 
   const {
@@ -24,6 +26,7 @@ function CreateUser(props: Props) {
     handleValue: handleNameValue,
     error: nameError,
     setError: setNameError,
+    setValue: setNameValue,
   } = useInput();
 
   const {
@@ -31,6 +34,7 @@ function CreateUser(props: Props) {
     handleValue: handleEmailValue,
     error: emailError,
     setError: setEmailError,
+    setValue: setEmailValue,
   } = useInput();
 
   const handleAvatarChange = (icon: string) => () => {
@@ -38,9 +42,10 @@ function CreateUser(props: Props) {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     setLoading(true);
     try {
-      e.stopPropagation();
       let formInvalid = false;
       if (!nameValue) {
         setNameError(true);
@@ -55,16 +60,45 @@ function CreateUser(props: Props) {
         return;
       }
       const payload = { name: nameValue, email: emailValue, avatar };
-      await createUser(payload);
-      const unique_id = uuid();
-      const small_id = unique_id.slice(0, 8);
-      const user: User = { ...payload, id: small_id };
-      handleSuccess(user);
+      if (flag === "create") {
+        await createUser(payload);
+        const unique_id = uuid();
+        const small_id = unique_id.slice(0, 8);
+        const userData: User = { ...payload, id: small_id };
+        onSuccess(userData);
+        toast.success("User added successfully!");
+      } else {
+        if (user && user.id) {
+          await updateUser(user.id, payload);
+          onEditSuccess(user.id, payload);
+          toast.success("User updated successfully!");
+        }
+      }
+      resetForm();
       closeBtnRef?.current?.click();
     } finally {
       setLoading(false);
     }
   };
+
+  const resetForm = () => {
+    setNameValue("");
+    setEmailValue("");
+    setAvatar("user1");
+  };
+
+  useEffect(() => {
+    if (user) {
+      const { name, email, avatar } = user;
+      setNameValue(name);
+      setEmailValue(email);
+      setAvatar(avatar);
+      setFlag("edit");
+    } else {
+      setFlag("create");
+      resetForm();
+    }
+  }, [user]);
 
   return (
     <>
@@ -80,7 +114,7 @@ function CreateUser(props: Props) {
             <form onSubmit={handleSubmit}>
               <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalLabel">
-                  Create User
+                  {flag === "create" ? "Create User" : "Edit User"}
                 </h5>
                 <button
                   type="button"

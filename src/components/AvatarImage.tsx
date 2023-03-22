@@ -9,7 +9,7 @@ function AvatarImage(props: Props) {
   const { image } = props;
   const rndInt = Math.floor(Math.random() * 8 + 1);
 
-  return <img src={image ? image : avatars[`user${rndInt}`]} />;
+  return <img src={image ? avatars[image] : avatars[`user${rndInt}`]} />;
 }
 
 export default AvatarImage;
