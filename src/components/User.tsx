@@ -3,8 +3,8 @@ import IUser from "../types/User";
 import AvatarImage from "./AvatarImage";
 
 interface Props {
-  user: IUser;
-  setCurrentUser: (user: IUser) => void;
+  user: IUser; // Current user
+  setCurrentUser: (user: IUser) => void; //Sets this user as current for edit and delete
 }
 
 function User(props: Props) {

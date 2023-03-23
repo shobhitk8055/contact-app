@@ -27,6 +27,7 @@ function App() {
     }
   }, [data]);
 
+  // User is successfully created in the server
   const handleSuccess = (user: IUser) => {
     setLoading(true);
     setTimeout(() => {
@@ -37,6 +38,7 @@ function App() {
     }, 300);
   };
 
+  // User is successfully edited in the server
   const handleEditSuccess = (id: string, payload: IUser) => {
     setLoading(true);
     setTimeout(() => {
@@ -48,14 +50,17 @@ function App() {
         user.avatar = payload.avatar;
       }
       setUsers(userList);
+      setUser(undefined);
       setLoading(false);
     }, 300);
   };
 
+  // For handling edit modal and delete modal
   const setCurrentUser = (user: IUser) => {
     setUser(user);
   };
 
+  // When user is succesfully delete from the database
   const deleteSuccess = (id: string) => {
     setLoading(true);
     setTimeout(() => {
@@ -109,7 +114,7 @@ function App() {
         onSuccess={handleSuccess}
       />
       <ToastContainer />
-      <DeleteUser deleteSuccess={deleteSuccess} />
+      <DeleteUser user={user} deleteSuccess={deleteSuccess} />
     </div>
   );
 }

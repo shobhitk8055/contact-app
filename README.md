@@ -1,6 +1,6 @@
 # About Project
 
-This is a react based calculator project. User can type from keyboard or choose any button from screen. All operations are allowed including addition, subtraction, multiplication, divide or percentage.
+This is a react based contact app. User can save there contacts with the information like name and email. He can edit or delete at any point of time. It also contains some cool avatars so that you can make your contacts more cooler.
 
 # Steps to run this project on local server
 
@@ -8,4 +8,4 @@ This is a react based calculator project. User can type from keyboard or choose 
 2. Run this command "npm start"
 3. In the browser open http://localhost:3000
 
-Note: There is no cursor in the calculator, since it will always be focussed, or even if you click anywhere in the project it will be focussed, so there is no need.
+Note: Data is not really saving to the server, it is just an mimic of a real server-client based project. 

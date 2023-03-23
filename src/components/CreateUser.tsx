@@ -9,9 +9,9 @@ import { v4 as uuid } from "uuid";
 import BackdropLoader from "./loaders/BackdropLoader";
 
 interface Props {
-  onSuccess: (user: User) => void;
-  onEditSuccess: (id: string, user: User) => void;
-  user?: User;
+  onSuccess: (user: User) => void; //Created successfully
+  onEditSuccess: (id: string, user: User) => void; //Edited successfully
+  user?: User; //Current user
 }
 
 function CreateUser(props: Props) {
@@ -21,6 +21,7 @@ function CreateUser(props: Props) {
   const [flag, setFlag] = useState<string>("create");
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
 
+  // Hook for input forms
   const {
     value: nameValue,
     handleValue: handleNameValue,
@@ -37,10 +38,12 @@ function CreateUser(props: Props) {
     setValue: setEmailValue,
   } = useInput();
 
+  //Set avatar image 
   const handleAvatarChange = (icon: string) => () => {
     setAvatar(icon);
   };
 
+  // Handle submit form (both create and edit)
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -81,6 +84,7 @@ function CreateUser(props: Props) {
     }
   };
 
+  // Reset the form
   const resetForm = () => {
     setNameValue("");
     setEmailValue("");

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import { toast } from "react-toastify";
 import { deleteUser } from "../api/user";
 import IUser from "../types/User";
 import BackdropLoader from "./loaders/BackdropLoader";
@@ -11,6 +12,7 @@ interface Props {
 const DeleteUser = (props: Props) => {
   const { user, deleteSuccess } = props;
   const [loading, setLoading] = useState<boolean>(false);
+  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
 
   const onDelete = async () => {
     try {
@@ -18,6 +20,8 @@ const DeleteUser = (props: Props) => {
         setLoading(true);
         await deleteUser(user.id);
         deleteSuccess(user.id);
+        closeBtnRef?.current?.click();
+        toast.success("User updated successfully!");
       }
     } finally {
       setLoading(false);
