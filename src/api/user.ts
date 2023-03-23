@@ -12,3 +12,7 @@ export const createUser = (payload: User) => {
 export const updateUser = (id: string, payload: User) => {
   return axios.patch(`users/${id}`, payload);
 };
+
+export const deleteUser = (id: string) => {
+  return axios.delete(`users/${id}`);
+};

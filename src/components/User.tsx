@@ -4,11 +4,11 @@ import AvatarImage from "./AvatarImage";
 
 interface Props {
   user: IUser;
-  handleEdit: (user: IUser) => void;
+  setCurrentUser: (user: IUser) => void;
 }
 
 function User(props: Props) {
-  const { user, handleEdit } = props;
+  const { user, setCurrentUser } = props;
 
   return (
     <div className="user-card">
@@ -21,12 +21,17 @@ function User(props: Props) {
         <span
           data-bs-toggle="modal"
           data-bs-target="#createUser"
-          onClick={() => handleEdit(user)}
+          onClick={() => setCurrentUser(user)}
           title="Edit"
         >
           <i className="fa-solid fa-pen"></i>
         </span>
-        <span title="Delete">
+        <span
+          data-bs-toggle="modal"
+          data-bs-target="#deleteUser"
+          title="Delete"
+          onClick={() => setCurrentUser(user)}
+        >
           <i className="fa-solid fa-trash"></i>
         </span>
       </div>

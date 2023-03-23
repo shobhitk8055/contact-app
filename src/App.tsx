@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import useUserApi from "./hooks/useUserApi";
 import UserListLoader from "./components/loaders/UserListLoader";
 import IUser from "./types/User";
+import DeleteUser from "./components/DeleteUser";
 const rndInt = () => Math.floor(Math.random() * 8 + 1);
 
 function App() {
@@ -40,8 +41,8 @@ function App() {
     setLoading(true);
     setTimeout(() => {
       const userList = [...users];
-      const user = userList.find(i => i.id === id);
-      if(user){
+      const user = userList.find((i) => i.id === id);
+      if (user) {
         user.name = payload.name;
         user.email = payload.email;
         user.avatar = payload.avatar;
@@ -51,8 +52,18 @@ function App() {
     }, 300);
   };
 
-  const handleEdit = (user: IUser) => {
+  const setCurrentUser = (user: IUser) => {
     setUser(user);
+  };
+
+  const deleteSuccess = (id: string) => {
+    setLoading(true);
+    setTimeout(() => {
+      let userList = [...users];
+      userList = userList.filter((i) => i.id !== id);
+      setUsers(userList);
+      setLoading(false);
+    }, 300);
   };
 
   return (
@@ -78,7 +89,11 @@ function App() {
               {!loading ? (
                 <>
                   {users.map((i, index) => (
-                    <User key={index} user={i} handleEdit={handleEdit} />
+                    <User
+                      key={index}
+                      user={i}
+                      setCurrentUser={setCurrentUser}
+                    />
                   ))}
                 </>
               ) : (
@@ -88,8 +103,13 @@ function App() {
           </div>
         </div>
       </div>
-      <CreateUser onEditSuccess={handleEditSuccess} user={user} onSuccess={handleSuccess} />
+      <CreateUser
+        onEditSuccess={handleEditSuccess}
+        user={user}
+        onSuccess={handleSuccess}
+      />
       <ToastContainer />
+      <DeleteUser deleteSuccess={deleteSuccess} />
     </div>
   );
 }
